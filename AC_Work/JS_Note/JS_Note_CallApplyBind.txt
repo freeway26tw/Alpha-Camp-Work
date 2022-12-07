@@ -1,0 +1,55 @@
+閱讀資料: https://ithelp.ithome.com.tw/articles/10195896
+
+call / apply / bind
+
+
+call: function.call(this, arg1, arg2..., argn)
+apply: function.apply(this, [arg1, arg2..., argn])
+
+首先 Call 跟 Apply的功能是一樣的，所以放在一起討論
+都是要在"明確指定的物件"上執行function
+而如果要擔存執行function本身，直接使用()即可
+
+雖然功能一樣，但兩者使用上有差別
+在於是否限定參數以及參數數量是否清楚
+
+call: 明確知道參數數量 (所以function裡用逗號隔開)
+apply: 不清楚參數數量 (所以function裡用陣列表達)
+
+例如:
+function add(a, b) {
+  return a + b;
+}
+console.log(add(1, 2));	 // 3
+console.log(add.call(null, 1, 2));  // 3
+console.log(add.apply(null, [1, 2]));  // 3
+console.log(add.apply(null, 1, 2));  // Uncaught TypeError: CreateListFromArrayLike called on non-object
+
+-----
+
+bind: function.bind(this, arg1, arg2..., argn)
+
+bind算是call跟apply的親戚
+也是在"明確指定的物件"上執行function
+而這個bind可以帶入argument到function中 (類似事先準備好參數的概念)
+
+ps. bind是存成一個function
+而call, apply則是直接執行function
+
+例如:
+function add(a, b) {
+  return a + b;
+}
+add.call(null, 1, 2);  // 3
+add.call(null, 1, 4);  // 5
+add.apply(null, [1, 2]);  // 3
+add.apply(null, [1, 4]);  // 5
+
+let add1 = add.bind(null, 1);
+console.log(add1(2));  // 3
+console.log(add1(4));  // 5
+
+從這個例子可以看到，我們在bind的第二個參數設定1，作為add函式的第一個參數
+所以我們只要帶入第二個參數給 add1 就可以達成 add(1, ?) 的功能了
+
+

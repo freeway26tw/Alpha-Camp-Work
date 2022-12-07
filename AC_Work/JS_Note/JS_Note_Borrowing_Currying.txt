@@ -1,0 +1,52 @@
+參考文章: https://medium.com/itsems-frontend/javascript-bind-call-apply-and-function-borrowing-and-currying-6bed787cd3eb
+
+function borrowing
+
+const mainRole = {
+  name: '小當家',
+  cook() {
+    return this.name + ' ' + '可是特級廚師'
+  }
+}
+const others = {
+  name: '雜魚'
+}
+
+// 假設今天有雜魚角色跟小當家借特級廚師徽章，那麼是 
+// 小當家(mainRole)
+// 將function(cook)
+// 綁定給(bind)
+// 雜魚角色(others)
+let borrowBadge = mainRole.cook.bind(others)
+
+// 因為是雜魚使用這個function，所以this指向others這個物件
+console.log(borrowBadge()) // 雜魚可是特級廚師
+
+-----
+
+function currying
+// 簡單來說，就是一個「將接收 n 個參數的函式拆解為一連串 n 個只接受一個參數的函式」的過程
+
+// 例如:
+function add(a) {
+  return function (b) {
+    return a + b   
+  }
+}
+
+console.log(add(1)(2)) // 3
+
+
+// 另外一個例子
+function add(a, b) {
+  return a + b
+}
+
+let add10 = add.bind(this, 10)
+// add10 function 的a參數永久都會是10
+// ps. 該參數永久無法變動
+
+console.log(add10(5)) //15
+
+// 因此this指的是使用bind method的function本身
+// i.e add
